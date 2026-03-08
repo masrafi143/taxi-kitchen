@@ -1,10 +1,11 @@
+import Header from "./components/Header.jsx/Header";
 import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <>
-      <div className="w-11/12 mx-auto">
-        <Navbar />
+      <div>
+        <Header/>
       </div>
     </>
   );
