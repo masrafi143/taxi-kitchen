@@ -2,7 +2,8 @@ import React, { use, useState } from "react";
 import States from "./States";
 import OrderCard from "./cards/orderCard";
 import { toast } from "react-toastify";
-import CookingCard from "./cards/CookingCars";
+import CookingCard from "./cards/CookingCard";
+import ReadyCard from "./cards/ReadyCard";
 
 const OrderContainers = ({ orderPromise }) => {
   const data = use(orderPromise);
@@ -22,6 +23,19 @@ const OrderContainers = ({ orderPromise }) => {
     setCookingItems(newCookingItems);
     console.log(newCookingItems);
   };
+
+  const handleCooking = (order) => {
+    order.cookedAt = new Date().toLocaleTimeString();
+    const newReadyItems = [...readyItems, order];
+    setReadyItems(newReadyItems);
+
+    const reamingCookingItems = cookingItems.filter(item=> item.id !== order.id);
+    setCookingItems(reamingCookingItems);
+
+    const reamingOrders = orders.filter(item=> item.id != order.id);
+    setOrders(reamingOrders);
+
+  }
 
   return (
     <div>
@@ -48,11 +62,18 @@ const OrderContainers = ({ orderPromise }) => {
             <h2 className="text-4xl font-bold">Cooking Now</h2>
             <div className="shadow p-8 space-y-5">
               {cookingItems.map((order) => (
-                <CookingCard key={order.id} order={order} />
+                <CookingCard key={order.id} handleCooking={handleCooking} order={order} />
               ))}
             </div>
             <h2 className="text-4xl font-bold">Order Ready</h2>
-            <div className="shadow p-8 space-y-5">{}</div>
+            <div className="shadow p-8 space-y-5">
+                {
+                    readyItems.map(order=>(
+                        <ReadyCard key={order.id} order={order}/>
+
+                    ))
+                }
+            </div>
           </div>
         </div>
       </div>
