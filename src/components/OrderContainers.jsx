@@ -29,13 +29,15 @@ const OrderContainers = ({ orderPromise }) => {
     const newReadyItems = [...readyItems, order];
     setReadyItems(newReadyItems);
 
-    const reamingCookingItems = cookingItems.filter(item=> item.id !== order.id);
+    const reamingCookingItems = cookingItems.filter(
+      (item) => item.id !== order.id,
+    );
     setCookingItems(reamingCookingItems);
 
-    const reamingOrders = orders.filter(item=> item.id != order.id);
+    const reamingOrders = orders.filter((item) => item.id != order.id);
     setOrders(reamingOrders);
-
-  }
+    toast.success(`${order.order_title} has been cooked and ready to be served.`)
+  };
 
   return (
     <div>
@@ -47,8 +49,12 @@ const OrderContainers = ({ orderPromise }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 w-11/12 mx-auto py-10 gap-5">
         <div className="lg:col-span-7">
           <h2 className="text-4xl font-bold">Current Orders</h2>
-          <div className="space-y-5">
-            {orders.map((order) => (
+          <div className="shadow p-8 space-y-5">
+            {
+            orders.length == 0 ? <div>
+                <h2>No current orders</h2>
+            </div> :
+            orders.map((order) => (
               <OrderCard
                 key={order.id}
                 handleOrders={handleOrders}
@@ -61,18 +67,27 @@ const OrderContainers = ({ orderPromise }) => {
           <div>
             <h2 className="text-4xl font-bold">Cooking Now</h2>
             <div className="shadow p-8 space-y-5">
-              {cookingItems.map((order) => (
-                <CookingCard key={order.id} handleCooking={handleCooking} order={order} />
+              {
+              cookingItems.length == 0 ? <div>
+                <h2>Nothing is cooking now.</h2>
+            </div>  :
+              cookingItems.map((order) => (
+                <CookingCard
+                  key={order.id}
+                  handleCooking={handleCooking}
+                  order={order}
+                />
               ))}
             </div>
             <h2 className="text-4xl font-bold">Order Ready</h2>
             <div className="shadow p-8 space-y-5">
-                {
-                    readyItems.map(order=>(
-                        <ReadyCard key={order.id} order={order}/>
-
-                    ))
-                }
+              {
+              readyItems.length == 0 ? <div>
+                <h2>No orders has been ready yet.</h2>
+            </div> :
+              readyItems.map((order) => (
+                <ReadyCard key={order.id} order={order} />
+              ))}
             </div>
           </div>
         </div>
