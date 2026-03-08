@@ -1,0 +1,40 @@
+import React, { use, useState } from "react";
+import States from "./States";
+import OrderCard from "./cards/orderCard";
+
+const OrderContainers = ({ orderPromise }) => {
+  const data = use(orderPromise);
+  console.log(data);
+
+  const [orders, setOrders] = useState(data);
+  const [cookingItems, setCookingItems] = useState([]);
+  const [readyItems, setReadyItems] = useState([]);
+
+  return (
+    <div>
+      <States
+        orderTotal={orders.length}
+        cookingTotal={cookingItems.length}
+        readyTotal={readyItems.length}
+      />
+      <div className="grid grid-cols-1 lg:grid-cols-12 w-11/12 mx-auto py-10 gap-5">
+        <div className="lg:col-span-7">
+            <h2 className="text-4xl font-bold">Current Orders</h2>
+            {
+                orders.map((order) => (
+                    <OrderCard order={order}/>
+                ))
+            }
+        </div>
+        <div className="lg:col-span-5">
+            <div>
+                <h2 className="text-4xl font-bold">Cooking Now</h2>
+                <h2 className="text-4xl font-bold">Order Ready</h2>
+            </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default OrderContainers;
